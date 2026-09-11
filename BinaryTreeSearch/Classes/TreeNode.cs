@@ -15,7 +15,7 @@ namespace BinaryTreeSearch.Classes
             Left = null;
             Right = null;
         }
-
+//----------------------------------------------------------------------------------------------------------------------//
         public TreeNode<T>? SearchRecursive(TreeNode<T>? root, T key)
         {
             // Base Case: root is null or key is found
@@ -29,7 +29,7 @@ namespace BinaryTreeSearch.Classes
             // Key is greater than root's data -> search right subtree
             return SearchRecursive(root.Right, key);
         }
-
+//----------------------------------------------------------------------------------------------------------------------//
         public TreeNode<T>? SearchIterative(TreeNode<T>? root, T key)
         {
             TreeNode<T>? current = root;
@@ -47,5 +47,41 @@ namespace BinaryTreeSearch.Classes
 
             return null; // Not found
         }
+        //----------------------------------------------------------------------------------------------------------------------//
+
+        public TreeNode<T>? SearchUnsortedDFS(TreeNode<T>? root, T key)
+        {
+            if (root == null) return null;
+            if (EqualityComparer<T>.Default.Equals(root.Data, key)) return root;
+
+            // Search left branch
+            var leftResult = SearchUnsortedDFS(root.Left, key);
+            if (leftResult != null) return leftResult;
+
+            // Search right branch
+            return SearchUnsortedDFS(root.Right, key);
+        }
+//----------------------------------------------------------------------------------------------------------------------//
+        public TreeNode<T>? SearchUnsortedBFS(TreeNode<T>? root, T key)
+        {
+            if (root == null) return null;
+
+            Queue<TreeNode<T>> queue = new Queue<TreeNode<T>>();
+            queue.Enqueue(root);
+
+            while (queue.Count > 0)
+            {
+                TreeNode<T> current = queue.Dequeue();
+
+                if (EqualityComparer<T>.Default.Equals(current.Data, key))
+                    return current;
+
+                if (current.Left != null) queue.Enqueue(current.Left);
+                if (current.Right != null) queue.Enqueue(current.Right);
+            }
+
+            return null;
+        }
+
     }
 }
